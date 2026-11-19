@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
 
 struct ramo {
     int val;
@@ -8,26 +10,11 @@ struct ramo {
 
 typedef struct ramo Ramo;
 
-Ramo *buscar(Ramo **arvore, int valor) {
 
-    if (*arvore == NULL) {
-        return NULL;
-    }
-
-    if ((*arvore)->val == valor) {
-        return *arvore;
-    }
-    if (valor < (*arvore) ->val) {
-        return buscar(&(*arvore)->esq, valor);
-    }
-
-    return buscar(&(*arvore)->dir, valor);
-
-}
 
 void insere(Ramo **arvore, int valor) {
 
-    if (arvore == NULL) {
+    if (*arvore == NULL) {
         *arvore = malloc(sizeof(Ramo));
         (*arvore)->val = valor;
         (*arvore)->esq = NULL;
@@ -42,7 +29,7 @@ void insere(Ramo **arvore, int valor) {
             insere(&(*arvore)->dir, valor);
         }
     }
-    
+
 }
 
 void remover(Ramo **arvore, int valor) {
@@ -107,6 +94,33 @@ void imprimirEmOrdem(Ramo **arvore) {
 }
 
 int main(void) {
-    printf("Hello, World!\n");
+    Ramo *raiz = NULL;
+
+    // cria a árvore
+    insere(&raiz, 50);
+    insere(&raiz, 30);
+    insere(&raiz, 70);
+    insere(&raiz, 20);
+    insere(&raiz, 40);
+    insere(&raiz, 60);
+    insere(&raiz, 80);
+
+    printf("Inicial:  ");
+    imprimirEmOrdem(&raiz);
+    printf("\n");
+    printf("=========================================\n");
+
+    insere(&raiz, 35);
+    printf("Inseriu 35: ");
+    imprimirEmOrdem(&raiz);
+    printf("\n");
+    printf("=========================================\n");
+
+    remover(&raiz, 50);
+    printf("Removeu 50: ");
+    imprimirEmOrdem(&raiz);
+    printf("\n");
+    printf("=========================================\n");
+
     return 0;
 }

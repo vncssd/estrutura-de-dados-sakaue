@@ -8,6 +8,23 @@ struct ramo {
 
 typedef struct ramo Ramo;
 
+Ramo *buscar(Ramo **arvore, int valor) {
+
+    if (*arvore == NULL) {
+        return NULL;
+    }
+
+    if ((*arvore)->val == valor) {
+        return *arvore;
+    }
+    if (valor < (*arvore) ->val) {
+        return buscar(&(*arvore)->esq, valor);
+    }
+
+    return buscar(&(*arvore)->dir, valor);
+
+}
+
 void insere(Ramo **arvore, int valor) {
 
     if (arvore == NULL) {

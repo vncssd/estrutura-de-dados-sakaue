@@ -2,13 +2,13 @@
 
 void ordenar(int arr[], int tamanho) {
     for (int i=1; i < tamanho; i++) {
+        int temp = arr[i];
         int j = i;
-        if (j > 0 && arr[j] < arr[j-1]) {
-            int temp = arr [j];
+        while (j > 0 && arr[j] < arr[j-1]) {
             arr[j] = arr[j-1];
-            arr[j-1] = temp;
             j--;
         }
+        arr[j] = temp;
     }
 }
 
@@ -19,5 +19,5 @@ int main(void) {
 
     for (int i = 0; i<10; i++) {
         printf("%d", numeros[i]);
-    }
+    }''
 }

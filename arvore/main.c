@@ -96,7 +96,6 @@ void imprimirEmOrdem(Ramo **arvore) {
 int main(void) {
     Ramo *raiz = NULL;
 
-    // cria a árvore
     insere(&raiz, 50);
     insere(&raiz, 30);
     insere(&raiz, 70);

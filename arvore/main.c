@@ -45,6 +45,67 @@ void insere(Ramo **arvore, int valor) {
     
 }
 
+void remover(Ramo **arvore, int valor) {
+
+    if (*arvore == NULL) {
+        return;
+    }
+
+    if ((*arvore)->val == valor) {
+
+        if ((*arvore)->dir == NULL && (*arvore)->esq == NULL) {
+            free(*arvore);
+            *arvore = NULL;
+            return;
+        }
+
+        if ((*arvore)->dir == NULL && (*arvore)->esq != NULL) {
+            Ramo *removido = *arvore;
+            *arvore = (*arvore)->esq;
+            free(removido);
+            return;
+        }
+
+        if ((*arvore)->dir != NULL && (*arvore)->esq == NULL) {
+            Ramo *removido = *arvore;
+            *arvore = (*arvore)->dir;
+            free(removido);
+            return;
+        }
+
+        if ((*arvore)->dir != NULL && (*arvore)->esq != NULL) {
+            Ramo *prox = (*arvore)->dir;
+            while (prox->esq != NULL) {
+                prox = prox->esq;
+            }
+            (*arvore)->val = prox->val;
+            remover(&(*arvore)->dir, prox->val);
+            return;
+        }
+
+    }
+
+    if (valor < (*arvore)->val) {
+        remover(&(*arvore)->esq, valor);
+    }
+    if (valor > (*arvore)->val) {
+        remover(&(*arvore)->dir, valor);
+    }
+
+}
+
+void imprimirEmOrdem(Ramo **arvore) {
+
+    if (*arvore == NULL) {
+        return;
+    }
+
+    imprimirEmOrdem(&(*arvore)->esq);
+    printf("\n%d", (*arvore)->val);
+    imprimirEmOrdem(&(*arvore)->dir);
+
+}
+
 int main(void) {
     printf("Hello, World!\n");
     return 0;

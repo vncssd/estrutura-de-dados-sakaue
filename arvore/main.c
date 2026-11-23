@@ -10,8 +10,6 @@ struct ramo {
 
 typedef struct ramo Ramo;
 
-
-
 void insere(Ramo **arvore, int valor) {
 
     if (*arvore == NULL) {
@@ -32,7 +30,51 @@ void insere(Ramo **arvore, int valor) {
 
 }
 
-void remover(Ramo **arvore, int valor) {
+Ramo **buscar(Ramo **arvore, int valor) {
+    if (*arvore == NULL || (*arvore)->val == valor) {
+        return arvore;
+    }
+    if (valor < (*arvore)->val) {
+        return buscar(&(*arvore)->esq, valor);
+    }
+    return buscar(&(*arvore)->dir, valor);
+}
+
+
+Ramo *removerRaiz(Ramo **raiz) {
+
+    Ramo *paiMaiorEsquerdo;
+    Ramo *maiorEsquerdo;
+
+    if ((*raiz)->esq == NULL) {
+        Ramo *filhoDireito = (*raiz)->dir;
+        free(*raiz);
+        return filhoDireito;
+    }
+
+    paiMaiorEsquerdo = *raiz;
+    maiorEsquerdo = paiMaiorEsquerdo->esq;
+
+    while (maiorEsquerdo->dir != NULL) {
+        paiMaiorEsquerdo = maiorEsquerdo;
+        maiorEsquerdo = maiorEsquerdo->dir;
+    }
+
+    if (paiMaiorEsquerdo != *raiz) {
+        paiMaiorEsquerdo->dir = maiorEsquerdo->esq;
+        maiorEsquerdo->esq = (*raiz)->esq;
+    }
+
+    maiorEsquerdo->dir = (*raiz)->dir;
+
+    free(*raiz);
+
+    return maiorEsquerdo;
+}
+
+
+
+void buscarRemover(Ramo **arvore, int valor) {
 
     if (*arvore == NULL) {
         return;
@@ -66,17 +108,17 @@ void remover(Ramo **arvore, int valor) {
                 prox = prox->esq;
             }
             (*arvore)->val = prox->val;
-            remover(&(*arvore)->dir, prox->val);
+            buscarRemover(&(*arvore)->dir, prox->val);
             return;
         }
 
     }
 
     if (valor < (*arvore)->val) {
-        remover(&(*arvore)->esq, valor);
+        buscarRemover(&(*arvore)->esq, valor);
     }
     if (valor > (*arvore)->val) {
-        remover(&(*arvore)->dir, valor);
+        buscarRemover(&(*arvore)->dir, valor);
     }
 
 }
@@ -115,8 +157,21 @@ int main(void) {
     printf("\n");
     printf("=========================================\n");
 
-    remover(&raiz, 50);
+    raiz = removerRaiz(&raiz);
     printf("Removeu 50: ");
+    imprimirEmOrdem(&raiz);
+    printf("\n");
+    printf("=========================================\n");
+
+    raiz = removerRaiz(&raiz);
+    printf("Removeu 40: ");
+    imprimirEmOrdem(&raiz);
+    printf("\n");
+    printf("=========================================\n");
+
+    Ramo *alvo = buscar(&raiz,20);
+    raiz = removerRaiz(&alvo);
+    printf("Removeu 80: ");
     imprimirEmOrdem(&raiz);
     printf("\n");
     printf("=========================================\n");
